@@ -629,21 +629,21 @@ bool sb_update_frame (SLAMBenchLibraryHelper *slam_settings , slambench::io::SLA
     } else if(s->FrameSensor == rgb_sensor and imRGB) {
         memcpy(imRGB->data, s->GetData(), s->GetSize());
         cv::Mat image_grey = cv::Mat(rgb_sensor->Height, rgb_sensor->Width, CV_8UC3, imRGB->data);
-        im_compute_metrics(image_grey)
+        im_compute_metrics(image_grey);
         last_frame_timestamp = s->Timestamp;
         rgb_ready = true;
         s->FreeData();
     } else if(s->FrameSensor == grey_sensor_one and img_one) {
         memcpy(img_one->data, s->GetData(), s->GetSize());
         cv::Mat image_grey = cv::Mat(grey_sensor_one->Height, grey_sensor_one->Width, CV_8UC1, img_one->data);
-        im_compute_metrics(image_grey)
+        im_compute_metrics(image_grey);
         last_frame_timestamp = s->Timestamp;
         grey_one_ready = true;
         s->FreeData();
     } else if(s->FrameSensor == grey_sensor_two and img_two) {
         memcpy(img_two->data, s->GetData(), s->GetSize());
         cv::Mat image_grey = cv::Mat(grey_sensor_two->Height, grey_sensor_two->Width, CV_8UC1, img_two->data);
-        im_compute_metrics(image_grey)
+        im_compute_metrics(image_grey);
         last_frame_timestamp = s->Timestamp;
         grey_two_ready = true;
         s->FreeData();
