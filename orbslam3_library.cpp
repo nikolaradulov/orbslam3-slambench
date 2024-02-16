@@ -615,7 +615,7 @@ bool switched_dataset = false;
 bool sb_update_frame (SLAMBenchLibraryHelper *slam_settings , slambench::io::SLAMFrame* s) {
     assert(s != nullptr);
     is_cam_frame = true;
-
+    printf("Checkpoint 0\n");
     if(s->FrameSensor->GetType() == slambench::io::GroundTruthSensor::kGroundTruthTrajectoryType and !sb_get_tracked()) {
         cv::Mat matrix(4,4,CV_32F);
         memcpy(matrix.data, s->GetData(), s->GetSize());
