@@ -619,10 +619,13 @@ bool sb_update_frame (SLAMBenchLibraryHelper *slam_settings , slambench::io::SLA
     printf("Checkpoint 0\n");
     if(s->FrameSensor->GetType() == slambench::io::GroundTruthSensor::kGroundTruthTrajectoryType and !sb_get_tracked()) {
         cv::Mat matrix(4,4,CV_32F);
+        printf("Matrix alloc good\n");
         memcpy(matrix.data, s->GetData(), s->GetSize());
+        printf("Memcpy good\n");
         SLAM->mpTracker->mpMapDrawer->SetCurrentCameraPose(matrix);
         s->FreeData();
     }
+    printf("Checkpoint 0.5\n");
         //  Prevent last_frame_timestamp to be updated with IMU sensor timestamp
     else if(s->FrameSensor == depth_sensor and imD) {
         memcpy(imD->data, s->GetData(), s->GetSize());
