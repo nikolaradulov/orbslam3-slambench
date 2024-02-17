@@ -137,7 +137,7 @@ void static im_compute_metrics(const cv::Mat image)
     cv::meanStdDev(current_image, mu, sigma);
     double contrast = sigma.val[0];
     /* --------------------------------------------- */
-    std::cout << frames<< " " <<sharpness << "  " << brightness << "  " << contrast << std::endl;
+   // std::cout << frames<< " " <<sharpness << "  " << brightness << "  " << contrast << std::endl;
 
     std::ifstream ifile(im_file_name);
     bool file_exists = ifile.good();
