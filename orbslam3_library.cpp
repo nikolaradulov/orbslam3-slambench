@@ -636,8 +636,10 @@ bool sb_update_frame (SLAMBenchLibraryHelper *slam_settings , slambench::io::SLA
     } else if(s->FrameSensor == rgb_sensor and imRGB) {
         printf("Checkpoint 1.5\n");
         memcpy(imRGB->data, s->GetData(), s->GetSize());
+        printf("memcpy good\n");
         cv::Mat image_grey = cv::Mat(rgb_sensor->Height, rgb_sensor->Width, CV_8UC3, imRGB->data);
         im_compute_metrics(image_grey);
+        printf("quality good\n");
         last_frame_timestamp = s->Timestamp;
         rgb_ready = true;
         s->FreeData();
