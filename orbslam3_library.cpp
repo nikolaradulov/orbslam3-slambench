@@ -613,6 +613,7 @@ bool is_cam_frame;
 bool switched_dataset = false;
 
 bool sb_update_frame (SLAMBenchLibraryHelper *slam_settings , slambench::io::SLAMFrame* s) {
+    printf("This should be porinting why isn't it /n\n");
     assert(s != nullptr);
     is_cam_frame = true;
     printf("Checkpoint 0\n");
