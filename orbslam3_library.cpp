@@ -625,15 +625,16 @@ bool sb_update_frame (SLAMBenchLibraryHelper *slam_settings , slambench::io::SLA
         SLAM->mpTracker->mpMapDrawer->SetCurrentCameraPose(matrix);
         s->FreeData();
     }
-    printf("Checkpoint 0.5\n");
         //  Prevent last_frame_timestamp to be updated with IMU sensor timestamp
     else if(s->FrameSensor == depth_sensor and imD) {
+        printf("Checkpoint 0.5\n");
         memcpy(imD->data, s->GetData(), s->GetSize());
         last_frame_timestamp = s->Timestamp;
         depth_ready = true;
         s->FreeData();
         printf("Checkpoin 1\n");
     } else if(s->FrameSensor == rgb_sensor and imRGB) {
+        printf("Checkpoint 1.5\n");
         memcpy(imRGB->data, s->GetData(), s->GetSize());
         cv::Mat image_grey = cv::Mat(rgb_sensor->Height, rgb_sensor->Width, CV_8UC3, imRGB->data);
         im_compute_metrics(image_grey);
@@ -642,6 +643,7 @@ bool sb_update_frame (SLAMBenchLibraryHelper *slam_settings , slambench::io::SLA
         s->FreeData();
         printf("checkpoint 2\n");
     } else if(s->FrameSensor == grey_sensor_one and img_one) {
+        printf("checkpoint 2.5\n");
         memcpy(img_one->data, s->GetData(), s->GetSize());
         cv::Mat image_grey = cv::Mat(grey_sensor_one->Height, grey_sensor_one->Width, CV_8UC1, img_one->data);
         im_compute_metrics(image_grey);
@@ -650,6 +652,7 @@ bool sb_update_frame (SLAMBenchLibraryHelper *slam_settings , slambench::io::SLA
         s->FreeData();
         printf("checkpoint 3\n");
     } else if(s->FrameSensor == grey_sensor_two and img_two) {
+        printf("checkpoint 3.5 \n");
         memcpy(img_two->data, s->GetData(), s->GetSize());
         cv::Mat image_grey = cv::Mat(grey_sensor_two->Height, grey_sensor_two->Width, CV_8UC1, img_two->data);
         im_compute_metrics(image_grey);
