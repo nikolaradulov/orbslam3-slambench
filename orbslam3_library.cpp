@@ -613,55 +613,46 @@ bool is_cam_frame;
 bool switched_dataset = false;
 
 bool sb_update_frame (SLAMBenchLibraryHelper *slam_settings , slambench::io::SLAMFrame* s) {
-    printf("This should be porinting why isn't it /n\n");
     assert(s != nullptr);
     is_cam_frame = true;
-    printf("Checkpoint 0\n");
     if(s->FrameSensor->GetType() == slambench::io::GroundTruthSensor::kGroundTruthTrajectoryType and !sb_get_tracked()) {
         cv::Mat matrix(4,4,CV_32F);
-        printf("Matrix alloc good\n");
         memcpy(matrix.data, s->GetData(), s->GetSize());
-        printf("Memcpy good\n");
         SLAM->mpTracker->mpMapDrawer->SetCurrentCameraPose(matrix);
         s->FreeData();
     }
         //  Prevent last_frame_timestamp to be updated with IMU sensor timestamp
     else if(s->FrameSensor == depth_sensor and imD) {
-        printf("Checkpoint 0.5\n");
         memcpy(imD->data, s->GetData(), s->GetSize());
         last_frame_timestamp = s->Timestamp;
         depth_ready = true;
         s->FreeData();
-        printf("Checkpoin 1\n");
     } else if(s->FrameSensor == rgb_sensor and imRGB) {
-        printf("Checkpoint 1.5\n");
         memcpy(imRGB->data, s->GetData(), s->GetSize());
-        printf("memcpy good\n");
         cv::Mat image_grey = cv::Mat(rgb_sensor->Height, rgb_sensor->Width, CV_8UC3, imRGB->data);
         im_compute_metrics(image_grey);
-        printf("quality good\n");
         last_frame_timestamp = s->Timestamp;
         rgb_ready = true;
         s->FreeData();
-        printf("checkpoint 2\n");
+
     } else if(s->FrameSensor == grey_sensor_one and img_one) {
-        printf("checkpoint 2.5\n");
+
         memcpy(img_one->data, s->GetData(), s->GetSize());
         cv::Mat image_grey = cv::Mat(grey_sensor_one->Height, grey_sensor_one->Width, CV_8UC1, img_one->data);
         im_compute_metrics(image_grey);
         last_frame_timestamp = s->Timestamp;
         grey_one_ready = true;
         s->FreeData();
-        printf("checkpoint 3\n");
+
     } else if(s->FrameSensor == grey_sensor_two and img_two) {
-        printf("checkpoint 3.5 \n");
+
         memcpy(img_two->data, s->GetData(), s->GetSize());
         cv::Mat image_grey = cv::Mat(grey_sensor_two->Height, grey_sensor_two->Width, CV_8UC1, img_two->data);
         im_compute_metrics(image_grey);
         last_frame_timestamp = s->Timestamp;
         grey_two_ready = true;
         s->FreeData();
-        printf("checkpoin 4\n");
+
     }
     else if(s->FrameSensor == IMU_sensor && (input_mode == orbslam_input_mode::stereoimu || input_mode == orbslam_input_mode::monoimu)) {
         float* frame_data = (float*)s->GetData();
