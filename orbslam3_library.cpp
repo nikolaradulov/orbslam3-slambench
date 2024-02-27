@@ -109,7 +109,7 @@ int frames =1;
 bool im_file_initialized = false;
 
 
-void static im_compute_metrics(const cv::Mat image)
+void static im_compute_metrics(const cv::Mat image, SLAMBenchLibraryHelper * slam_settings)
 {   
     cv::Mat current_image;
 
@@ -151,7 +151,7 @@ void static im_compute_metrics(const cv::Mat image)
 
     std::ofstream ofile(im_file_name, std::ofstream::out | std::ofstream::app);
     if (ofile.is_open()) {
-        ofile << frames<< " " << sharpness << " " << brightness << " " << contrast << std::endl;
+        ofile << slam_settings->frame_counter << " " << sharpness << " " << brightness << " " << contrast << std::endl;
         ofile.close();
     } else {
         std::cerr << "Failed to open the file for writing." << std::endl;
@@ -630,7 +630,7 @@ bool sb_update_frame (SLAMBenchLibraryHelper *slam_settings , slambench::io::SLA
     } else if(s->FrameSensor == rgb_sensor and imRGB) {
         memcpy(imRGB->data, s->GetData(), s->GetSize());
         cv::Mat image_grey = cv::Mat(rgb_sensor->Height, rgb_sensor->Width, CV_8UC3, imRGB->data);
-        im_compute_metrics(image_grey);
+        im_compute_metrics(image_grey, slam_settings);
         last_frame_timestamp = s->Timestamp;
         rgb_ready = true;
         s->FreeData();
@@ -639,7 +639,7 @@ bool sb_update_frame (SLAMBenchLibraryHelper *slam_settings , slambench::io::SLA
 
         memcpy(img_one->data, s->GetData(), s->GetSize());
         cv::Mat image_grey = cv::Mat(grey_sensor_one->Height, grey_sensor_one->Width, CV_8UC1, img_one->data);
-        im_compute_metrics(image_grey);
+        im_compute_metrics(image_grey, slam_settings);
         last_frame_timestamp = s->Timestamp;
         grey_one_ready = true;
         s->FreeData();
@@ -648,7 +648,7 @@ bool sb_update_frame (SLAMBenchLibraryHelper *slam_settings , slambench::io::SLA
 
         memcpy(img_two->data, s->GetData(), s->GetSize());
         cv::Mat image_grey = cv::Mat(grey_sensor_two->Height, grey_sensor_two->Width, CV_8UC1, img_two->data);
-        im_compute_metrics(image_grey);
+        im_compute_metrics(image_grey, slam_settings);
         last_frame_timestamp = s->Timestamp;
         grey_two_ready = true;
         s->FreeData();
@@ -676,12 +676,12 @@ bool sb_update_frame (SLAMBenchLibraryHelper *slam_settings , slambench::io::SLA
 //  Continue sending in frames if not yet initialized or start frame not reached yet
     if((sensors_ready && !sb_get_initialized()) || frame_no < start_frame)
     {
-        cout<<"Perform tracking from sb_update_frame"<<std::endl;
+        // cout<<"Perform tracking from sb_update_frame"<<std::endl;
         // if the system requires more frames due to failure increase frame count
         // if tracking is performed than the frame was used. next frame then 
-        cout<<slam_settings->frame_counter<<' ';
+        // cout<<slam_settings->frame_counter<<' ';
         slam_settings->frame_counter++;
-        cout<<slam_settings->frame_counter<<endl;
+        // cout<<slam_settings->frame_counter<<endl;
         performTracking();
         return false;
     }
