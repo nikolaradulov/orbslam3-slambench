@@ -676,10 +676,10 @@ bool sb_update_frame (SLAMBenchLibraryHelper *slam_settings , slambench::io::SLA
 //  Continue sending in frames if not yet initialized or start frame not reached yet
     if((sensors_ready && !sb_get_initialized()) || frame_no < start_frame)
     {
-        cout<<"Perform tracking from sb_update_frame"<<std::endl;
+        // cout<<"Perform tracking from sb_update_frame"<<std::endl;
         // if the system requires more frames due to failure increase frame count
-        if(frame_no >= start_frame)
-            slam_settings->frame_counter++;
+        // if tracking is performed than the frame was used. next frame then 
+        slam_settings->frame_counter++;
         performTracking();
         return false;
     }
