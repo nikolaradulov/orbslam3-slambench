@@ -678,7 +678,7 @@ bool sb_update_frame (SLAMBenchLibraryHelper *slam_settings , slambench::io::SLA
     {
         cout<<"Perform tracking from sb_update_frame"<<std::endl;
         // if the system requires more frames due to failure increase frame count
-        if(!frame_no < start_frame)
+        if(frame_no >= start_frame)
             slam_settings->frame_counter++;
         performTracking();
         return false;
@@ -689,7 +689,7 @@ bool sb_update_frame (SLAMBenchLibraryHelper *slam_settings , slambench::io::SLA
 
 bool sb_process_once (SLAMBenchLibraryHelper *slam_settings)  {
     slam_settings->frame_counter++;
-    cout<<"Perform tracking from sb_process_once"<<std::endl;
+    // cout<<"Perform tracking from sb_process_once"<<std::endl;
     if(!performTracking())
         return false;
 
