@@ -121,14 +121,16 @@ void static im_compute_metrics(const cv::Mat image, SLAMBenchLibraryHelper * sla
     }
 
     /* ---------- Compute Image Quality ------------ */
-    cv::Mat laplacian, absLaplacian;
-
-    // Sharpness: Variance of Laplacian
-    cv::Laplacian(current_image, laplacian, CV_64F);
-    cv::convertScaleAbs(laplacian, absLaplacian);
+    cv::Mat gx, gy, g;
     cv::Scalar mu, sigma;
-    cv::meanStdDev(absLaplacian, mu, sigma);
-    double sharpness = sigma.val[0] * sigma.val[0];
+    
+    // Sharpness_new
+    cv::Sobel(current_image, gx, CV_64F, 1, 0, 3);
+    cv::Sobel(current_image, gy, CV_64F, 0, 1, 3);
+    cv::magnitude(gx, gy, g);
+    double sumG = cv::sum(g)[0];
+    double numPixels = current_image.rows * current_image.cols;
+    double sharpness = sumG / numPixels;
 
     // Brightness: Measure the brightness level
     double brightness = cv::mean(current_image)[0];
